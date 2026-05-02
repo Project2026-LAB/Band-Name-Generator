@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Band Name Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #16192b 100%);
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-top: 30px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff00ff, #00d4ff);
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0a0e27;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #ff00ff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #888;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #1a1f3a 0%, #16192b 100%);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
+        }
+
+        .card h2 {
+            color: #ff00ff;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #00d4ff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0f1428;
+            border: 2px solid #333;
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #0f1428;
+            border: 2px solid #333;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: #00d4ff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #ff00ff;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #e0e0e0;
+            text-transform: none;
+        }
+
+        .slider-group {
+            margin-bottom: 25px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .slider-label span:first-child {
+            color: #00d4ff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.95em;
+        }
+
+        .slider-label span:last-child {
+            color: #ff00ff;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #0f1428, #333);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff00ff, #00d4ff);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff00ff, #00d4ff);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #ff00ff, #00d4ff);
+            border: none;
+            border-radius: 10px;
+            color: #0a0e27;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.5);
+        }
+
+        .generate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .results-container {
+            background: linear-gradient(135deg, #1a1f3a 0%, #16192b 100%);
+            border: 2px solid #ff00ff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .results-container.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-container h3 {
+            color: #00d4ff;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .band-names {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .band-name-card {
+            background: #0f1428;
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .band-name-card:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .band-name-card.with-vocalist {
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .band-number {
+            color: #888;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .band-name {
+            color: #ff00ff;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .vocalist-tag {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .copy-btn {
+            background: #0a0e27;
+            border: 2px solid #ff00ff;
+            color: #ff00ff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            margin-top: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #ff00ff;
+            color: #0a0e27;
+        }
+
+        .ad-space {
+            background: #0f1428;
+            border: 1px dashed #333;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin: 30px 0;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .band-name {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-icon">🎸</div>
+            <h1>Band Name Generator</h1>
+            <p class="tagline">Create Unique Band Names For Your Sound</p>
+        </header>
+
+        <div class="ad-space">
+            📍 Ad Space #1 - 728x90 or 300x250
+        </div>
+
+        <div class="main-grid">
+            <div class="card">
+                <h2>🎵 Your Band Profile</h2>
+                
+                <div class="input-group">
+                    <label for="vocalistName">Lead Vocalist Name *</label>
+                    <input type="text" id="vocalistName" placeholder="e.g., Marcus, Alex, Sarah" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="genre">Music Genre *</label>
+                    <select id="genre" required>
+                        <option value="">Select Genre</option>
+                        <option value="metal">Metal</option>
+                        <option value="rock">Rock</option>
+                        <option value="indie">Indie</option>
+                        <option value="punk">Punk</option>
+                        <option value="jazz">Jazz</option>
+                        <option value="pop">Pop</option>
+                        <option value="electronic">Electronic</option>
+                        <option value="hip-hop">Hip-Hop</option>
+                        <option value="folk">Folk</option>
+                        <option value="soul">Soul/R&B</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="members">Number of Band Members *</label>
+                    <select id="members" required>
+                        <option value="">Select Members</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6+</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Instruments in Your Band *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="drums" value="drums">
+                            <label for="drums">Drums</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="bass" value="bass">
+                            <label for="bass">Bass</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="leadGuitar" value="lead-guitar">
+                            <label for="leadGuitar">Lead Guitar</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="acousticGuitar" value="acoustic">
+                            <label for="acousticGuitar">Acoustic Guitar</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keyboards" value="keyboards">
+                            <label for="keyboards">Keyboards</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="saxophone" value="saxophone">
+                            <label for="saxophone">Saxophone</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="horns" value="horns">
+                            <label for="horns">Horns/Trumpet</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vocals" value="vocals">
+                            <label for="vocals">Vocals</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Seriousness Level</span>
+                        <span id="seriousnessValue">5</span>
+                    </div>
+                    <input type="range" id="seriousness" min="1" max="10" value="5" oninput="updateSlider()">
+                    <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85em; color: #888;">
+                        <span>Fun & Playful</span>
+                        <span>Serious & Dark</span>
+                    </div>
+                </div>
+
+                <button class="generate-btn" onclick="generateNames()">Generate 5 Names</button>
+            </div>
+
+            <div class="card">
+                <h2>💡 Tips</h2>
+                <div style="color: #aaa; line-height: 1.8; font-size: 0.95em;">
+                    <p style="margin-bottom: 15px;"><strong style="color: #00d4ff;">Lead Vocalist Name:</strong> This will be used creatively in one of your suggestions.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #00d4ff;">Genre:</strong> Choose what style of music defines your band.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #00d4ff;">Instruments:</strong> Select all instruments your band plays — this helps shape the vibe of generated names.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #00d4ff;">Seriousness:</strong> Heavy metal bands? Dark vibes. Indie pop? More playful. Adjust the slider!</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #ff00ff;">Result:</strong> 5 completely unique names — 1 features your vocalist's name, 4 are pure generation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-space">
+            📍 Ad Space #2 - 728x90 or 300x250
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <h3>🎤 Your Generated Band Names</h3>
+            <div class="band-names" id="bandNames"></div>
+        </div>
+
+        <div class="ad-space">
+            📍 Ad Space #3 - 728x90 or 300x250
+        </div>
+    </div>
+
+    <script>
+        function updateSlider() {
+            const value = document.getElementById('seriousness').value;
+            document.getElementById('seriousnessValue').textContent = value;
+        }
+
+        const bandNameWords = {
+            metal: {
+                serious: ['Void', 'Abyss', 'Damnation', 'Inferno', 'Necro', 'Oblivion', 'Ebon', 'Shadows', 'Cruel', 'Dead', 'Forsaken', 'Venom', 'Black', 'Torment', 'Hellfire'],
+                fun: ['Thunder', 'Steel', 'Storm', 'Fury', 'Blaze', 'Iron', 'Chaos', 'Rogue', 'Rebel', 'Savage', 'Insane', 'Wild']
+            },
+            rock: {
+                serious: ['Stone', 'Gravel', 'Shattered', 'Broken', 'Rusted', 'Ancient', 'Lost', 'Faded', 'Hollow', 'Static', 'Wreck', 'Debris'],
+                fun: ['Thunder', 'Lightning', 'Pulse', 'Electric', 'Voltage', 'Rocker', 'Sonic', 'Wave', 'Beat', 'Amplified', 'Rocking']
+            },
+            indie: {
+                serious: ['Velvet', 'Whisper', 'Phantom', 'Echo', 'Void', 'Enigma', 'Shadow', 'Fading', 'Drift', 'Haze'],
+                fun: ['Whimsy', 'Quirk', 'Spark', 'Bloom', 'Float', 'Glimmer', 'Bounce', 'Twine', 'Maze', 'Cosmic']
+            },
+            punk: {
+                serious: ['Chaos', 'Anarchy', 'Rebel', 'Riot', 'Rage', 'Destroy', 'Attack', 'Violent', 'Raw', 'Rough'],
+                fun: ['Buzz', 'Zap', 'Kick', 'Smash', 'Crash', 'Bang', 'Pop', 'Snap', 'Flash', 'Jump']
+            },
+            jazz: {
+                serious: ['Blue', 'Smooth', 'Soulful', 'Deep', 'Groove', 'Vibe', 'Essence', 'Flow', 'Dusk', 'Midnight'],
+                fun: ['Swing', 'Jive', 'Bop', 'Stride', 'Riff', 'Syncopate', 'Improv', 'Funky', 'Lively', 'Mellow']
+            },
+            pop: {
+                serious: ['Pulse', 'Harmony', 'Resonance', 'Cadence', 'Melody', 'Rhythm', 'Euphony'],
+                fun: ['Bright', 'Shiny', 'Sunny', 'Bubbly', 'Zesty', 'Catchy', 'Sweet', 'Fun', 'Joy', 'Star']
+            },
+            electronic: {
+                serious: ['Synthesizer', 'Digital', 'Void', 'Frequency', 'Signal', 'Code', 'Matrix', 'Nexus'],
+                fun: ['Pixel', 'Byte', 'Wire', 'Circuit', 'Flash', 'Pulse', 'Sync', 'Volt']
+            },
+            'hip-hop': {
+                serious: ['Cipher', 'Flow', 'Lyric', 'Cipher', 'Beats', 'Words', 'Rhyme', 'Essence'],
+                fun: ['Boom', 'Tap', 'Drop', 'Spit', 'Groove', 'Flavor', 'Heat', 'Vibes']
+            },
+            folk: {
+                serious: ['Harvest', 'Timber', 'Root', 'Stone', 'Wilderness', 'Ancient', 'Tale', 'Lore'],
+                fun: ['Garden', 'Meadow', 'Firelight', 'Wanderer', 'Traveler', 'Wanderer', 'Echo', 'Tale']
+            },
+            'soul': {
+                serious: ['Spirit', 'Soul', 'Heart', 'Essence', 'Truth', 'Deep', 'Inner', 'Sacred'],
+                fun: ['Fire', 'Warmth', 'Love', 'Peace', 'Joy', 'Light', 'Grace', 'Shine']
+            }
+        };
+
+        const suffixes = {
+            serious: ['', 'IX', 'MCMXC', 'Collective', 'Order', 'Council', 'Coven', 'Cult', 'Circle', 'Syndicate'],
+            fun: ['', 'Express', 'Station', 'Crew', 'Squad', 'Bureau', 'Agency', 'Collective', 'Union', 'Assembly']
+        };
+
+        function generateNames() {
+            const vocalistName = document.getElementById('vocalistName').value.trim();
+            const genre = document.getElementById('genre').value;
+            const seriousness = parseInt(document.getElementById('seriousness').value);
+
+            if (!vocalistName || !genre) {
+                alert('Please fill in Lead Vocalist Name and Genre');
+                return;
+            }
+
+            const isSeriousStyle = seriousness >= 6;
+            const wordList = bandNameWords[genre]?.[isSeriousStyle ? 'serious' : 'fun'] || bandNameWords.rock.fun;
+            const suffixList = suffixes[isSeriousStyle ? 'serious' : 'fun'];
+
+            let names = [];
+            
+            // Generate 4 random names
+            for (let i = 0; i < 4; i++) {
+                let name = getRandomElement(wordList) + ' ' + getRandomElement(wordList);
+                if (Math.random() > 0.5 && suffixList.length > 0) {
+                    const suffix = getRandomElement(suffixList);
+                    if (suffix) name += ' ' + suffix;
+                }
+                names.push({ name: name, hasVocalist: false });
+            }
+
+            // Generate 1 name with vocalist's name
+            let vocalistName_name = vocalistName + "'s ' + getRandomElement(wordList);
+            names.splice(Math.floor(Math.random() * names.length), 0, { name: vocalistName_name, hasVocalist: true });
+
+            // Remove duplicates
+            names = names.filter((v, i, a) => a.findIndex(t => t.name === v.name) === i);
+
+            // Display results
+            let html = '';
+            names.forEach((item, index) => {
+                html += `
+                    <div class="band-name-card ${item.hasVocalist ? 'with-vocalist' : ''}">
+                        <div class="band-number">Suggestion ${index + 1}</div>
+                        <div class="band-name">${item.name}</div>
+                        ${item.hasVocalist ? '<span class="vocalist-tag">Features ' + vocalistName + '</span>' : ''}
+                        <button class="copy-btn" onclick="copyToClipboard('${item.name}')">Copy</button>
+                    </div>
+                `;
+            });
+
+            document.getElementById('bandNames').innerHTML = html;
+            document.getElementById('resultsContainer').classList.add('active');
+        }
+
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied: ' + text);
+            });
+        }
+    </script>
+</body>
+</html>
